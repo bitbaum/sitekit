@@ -16,7 +16,7 @@ export function ProseSection({
   index?: number;
 }) {
   return (
-    <section>
+    <section id={section.anchor} className="scroll-mt-24">
       {section.heading && <SectionHeading index={index}>{section.heading}</SectionHeading>}
       <div className={section.heading ? 'mt-6 sm:pl-10' : ''}>
         <div className="max-w-prose space-y-4">
@@ -38,15 +38,25 @@ export function CardsSection({
   section: Extract<SiteSection, { kind: 'cards' }>;
   index?: number;
 }) {
-  const columns = section.columns === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2';
+  const columns =
+    section.columns === 4
+      ? 'lg:grid-cols-4'
+      : section.columns === 3
+        ? 'lg:grid-cols-3'
+        : 'lg:grid-cols-2';
   return (
-    <section>
+    <section id={section.anchor} className="scroll-mt-24">
       {section.heading && <SectionHeading index={index}>{section.heading}</SectionHeading>}
       {section.blurb && <div className="sm:pl-10">{<Blurb>{section.blurb}</Blurb>}</div>}
       <SectionBody>
         <div className={`grid grid-cols-1 gap-x-8 gap-y-9 sm:grid-cols-2 ${columns}`}>
           {section.cards.map(card => (
             <article key={card.title} className="flex h-full flex-col border-t border-strong pt-4">
+              {card.icon && (
+                <span aria-hidden className="mb-2 text-3xl">
+                  {card.icon}
+                </span>
+              )}
               <h3 className="font-heading text-base font-semibold text-fg-primary">{card.title}</h3>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-fg-secondary">{card.body}</p>
               {card.meta && (
@@ -68,7 +78,7 @@ export function DefinitionsSection({
   index?: number;
 }) {
   return (
-    <section>
+    <section id={section.anchor} className="scroll-mt-24">
       {section.heading && <SectionHeading index={index}>{section.heading}</SectionHeading>}
       {section.blurb && <div className="sm:pl-10">{<Blurb>{section.blurb}</Blurb>}</div>}
       <SectionBody>

@@ -19,8 +19,15 @@ export {
   meterSectionSchema,
   cardsSectionSchema,
   definitionsSectionSchema,
+  featureSectionSchema,
+  contactSectionSchema,
+  faqSectionSchema,
   indexSectionSchema,
   tableSectionSchema,
+  siteActionSchema,
+  siteImageSchema,
+  siteLocationSchema,
+  siteFaqItemSchema,
   siteStatSchema,
   siteCardSchema,
   siteDefinitionSchema,
@@ -36,6 +43,10 @@ export {
   type SiteCard,
   type SiteDefinition,
   type SiteIndexEntry,
+  type SiteAction,
+  type SiteImage,
+  type SiteLocation,
+  type SiteFaqItem,
 } from './schema.js';
 
 export {

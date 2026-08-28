@@ -16,6 +16,7 @@ import { HeroSection } from './sections/HeroSection.js';
 import { MeterSection, StatsSection } from './sections/FigureSections.js';
 import { CardsSection, DefinitionsSection, ProseSection } from './sections/ProseSections.js';
 import { IndexSection, TableSection } from './sections/DataSections.js';
+import { ContactSection, FaqSection, FeatureSection } from './sections/BusinessSections.js';
 
 /** True when a section shows a heading, and therefore takes the next number. */
 function isNumbered(section: SiteSection): boolean {
@@ -43,6 +44,12 @@ export function SiteSections({ sections }: { sections: SiteSection[] }) {
             return <CardsSection key={key} section={section} index={index} />;
           case 'definitions':
             return <DefinitionsSection key={key} section={section} index={index} />;
+          case 'feature':
+            return <FeatureSection key={key} section={section} index={index} />;
+          case 'contact':
+            return <ContactSection key={key} section={section} index={index} />;
+          case 'faq':
+            return <FaqSection key={key} section={section} index={index} />;
           case 'index':
             return <IndexSection key={key} section={section} index={index} />;
           case 'table':

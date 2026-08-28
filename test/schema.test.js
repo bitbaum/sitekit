@@ -24,6 +24,9 @@ function fullSpec() {
           { kind: 'meter', label: 'Sourced', value: 3, of: 12 },
           { kind: 'cards', heading: 'Offers', cards: [{ title: 'Espresso', body: 'The house shot.', meta: 'CHF 4.50' }] },
           { kind: 'definitions', heading: 'Terms', items: [{ term: 'Cortado', detail: 'Espresso cut with milk.' }] },
+          { kind: 'feature', heading: 'The baker', paragraphs: ['Learned in Lyon.'], quote: 'Every croissant tells.', cta: { label: 'More', href: 'about' }, image: { src: '/founder.jpg', alt: 'The founder at the oven' } },
+          { kind: 'contact', heading: 'Find us', anchor: 'standorte', locations: [{ name: 'Café', note: 'Open Sundays', address: 'Limmatquai 42, 8001 Zürich', phone: '+41 44 000 12 34', hours: ['Mo–Fr: 06:30–18:00'] }] },
+          { kind: 'faq', heading: 'Good to know', items: [{ question: 'Can I order ahead?', answer: 'Yes, until 05:00.' }] },
           { kind: 'index', heading: 'Contents', entries: [{ label: 'Opening hours', anchor: 'hours' }] },
           { kind: 'table', anchor: 'hours', columns: ['Day', 'Hours'], rows: [['Mon–Fri', '07–18']] },
         ],
@@ -35,7 +38,7 @@ function fullSpec() {
 test('a spec exercising every section kind validates', () => {
   const result = validateSite(fullSpec());
   assert.equal(result.success, true);
-  assert.equal(result.data.pages[0].sections.length, 8);
+  assert.equal(result.data.pages[0].sections.length, 11);
 });
 
 test('an unknown section kind is rejected — the union is closed', () => {
@@ -56,7 +59,7 @@ test('a hero anywhere but first is rejected', () => {
 
 test('an index entry pointing at a missing anchor is rejected', () => {
   const spec = fullSpec();
-  spec.pages[0].sections[6].entries.push({ label: 'Nowhere', anchor: 'missing' });
+  spec.pages[0].sections[9].entries.push({ label: 'Nowhere', anchor: 'missing' });
   const result = validateSite(spec);
   assert.equal(result.success, false);
   assert.ok(result.errors.some(e => e.includes("'#missing'")), result.errors.join('\n'));
@@ -86,4 +89,18 @@ test('errors carry actionable paths, not just messages', () => {
 test('a bare section validates against the section schema directly', () => {
   const parsed = siteSectionSchema.safeParse({ kind: 'prose', paragraphs: ['One.'] });
   assert.equal(parsed.success, true);
+});
+
+test('a hero action pointing at a missing fragment is rejected', () => {
+  const spec = fullSpec();
+  spec.pages[0].sections[0].actions = [{ label: 'Nowhere', href: '#missing' }];
+  const result = validateSite(spec);
+  assert.equal(result.success, false);
+  assert.ok(result.errors.some(e => e.includes("'#missing'")), result.errors.join('\n'));
+});
+
+test('a hero action pointing at a real anchor validates', () => {
+  const spec = fullSpec();
+  spec.pages[0].sections[0].actions = [{ label: 'Find us', href: '#standorte' }];
+  assert.equal(validateSite(spec).success, true);
 });

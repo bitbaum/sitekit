@@ -18,8 +18,11 @@ quality becomes a property of the renderers — fixing the `cards` renderer
 improves every site ever generated. And the schema is where review happens:
 `validateSite()` returns `path: message` errors a model can act on directly.
 
-The current kinds: `hero`, `prose`, `stats`, `meter`, `cards`, `definitions`,
-`index`, `table`. Extending the union is a deliberate act in THIS repo — a new
+The current kinds: `hero` (with optional CTAs), `prose`, `stats`, `meter`,
+`cards`, `definitions`, `feature` (a figure beside a story), `contact`
+(locations, address, hours — the fields provenance exists to protect), `faq`,
+`index`, `table`. Most kinds take an optional `anchor`, and the schema rejects
+any index entry or hero action that points at a fragment nothing carries. Extending the union is a deliberate act in THIS repo — a new
 kind lands with its schema, its renderer, and its tests in one commit, and
 every consumer gets it on the next version bump.
 

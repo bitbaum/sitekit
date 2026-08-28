@@ -17,3 +17,4 @@ export { HeroSection } from './sections/HeroSection.js';
 export { ProseSection, CardsSection, DefinitionsSection } from './sections/ProseSections.js';
 export { StatsSection, MeterSection } from './sections/FigureSections.js';
 export { IndexSection, TableSection } from './sections/DataSections.js';
+export { FeatureSection, ContactSection, FaqSection } from './sections/BusinessSections.js';
