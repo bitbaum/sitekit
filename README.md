@@ -29,7 +29,7 @@ every consumer gets it on the next version bump.
 ## Install
 
 ```bash
-npm i github:bitbaum/sitekit#v0.1.0
+npm i github:bitbaum/sitekit#v0.2.0
 ```
 
 ESM-only. `react >= 18` is a peer dependency of `sitekit/react`; the root
