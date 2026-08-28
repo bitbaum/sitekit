@@ -1,6 +1,6 @@
 {
   "name": "sitekit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A website as data: a closed union of section shapes validated at runtime, one set of React renderers, and per-field provenance so a generated site can prove it fabricated nothing.",
   "license": "MIT",
   "author": "Mao Nakamoto",
