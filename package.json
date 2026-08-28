@@ -1,0 +1,66 @@
+{
+  "name": "sitekit",
+  "version": "0.1.0",
+  "description": "A website as data: a closed union of section shapes validated at runtime, one set of React renderers, and per-field provenance so a generated site can prove it fabricated nothing.",
+  "license": "MIT",
+  "author": "Mao Nakamoto",
+  "homepage": "https://github.com/bitbaum/sitekit#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitbaum/sitekit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bitbaum/sitekit/issues"
+  },
+  "keywords": [
+    "site-generator",
+    "content-model",
+    "sections",
+    "zod",
+    "react",
+    "headless-cms"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "default": "./dist/react/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test test/*.test.js",
+    "verify": "npm run lint && npm run typecheck && npm run build && npm test",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "zod": "^4.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.0",
+    "eslint": "^9.39.5",
+    "globals": "^15.15.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.67.0"
+  }
+}
