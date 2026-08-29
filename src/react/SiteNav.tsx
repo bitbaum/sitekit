@@ -38,7 +38,16 @@ export function SiteNav({ items, currentPath, Link = DefaultLink }: Props) {
             href={href(item.path)}
             aria-current={isCurrent ? 'page' : undefined}
             className={[
-              'shrink-0 rounded px-2 py-1 font-mono text-xs uppercase tracking-caps transition-colors',
+              // min-h-11 is the 44px touch floor. `px-2 py-1` on text-xs came out
+              // around 28px, which is a fiddly target on a phone and below the
+              // floor the rest of the fleet holds. The masthead row drops from
+              // py-4 to py-2 to pay for it, so the sticky header does NOT get
+              // taller — see the comment in SiteChrome.
+              'inline-flex min-h-11 shrink-0 items-center rounded px-2 font-mono text-xs uppercase tracking-caps transition-colors',
+              // A consumer's CSS reset can remove the UA focus ring, and this
+              // package shipped nothing to replace it — so keyboard users had no
+              // visible position in the nav on every site that installs it.
+              'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
               isCurrent
                 ? 'text-fg-primary underline decoration-accent decoration-2 underline-offset-8'
                 : 'text-fg-tertiary hover:text-fg-primary',

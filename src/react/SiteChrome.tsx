@@ -30,8 +30,14 @@ export function SiteMasthead({ chrome, navItems, currentPath, Link = DefaultLink
         {/* One row at every width. Wrapping the nav onto a second line makes a
             sticky masthead eat a third of a phone screen, so on narrow
             viewports the nav scrolls sideways instead. */}
-        <div className="flex items-center justify-between gap-6 py-4">
-          <Link href={href()} className="shrink-0">
+        {/* py-2, not py-4: the nav's items are now 44px tall (the touch floor),
+            and the row pays for that out of its own padding so the masthead
+            keeps the same height it always had. */}
+        <div className="flex items-center justify-between gap-6 py-2">
+          <Link
+            href={href()}
+            className="inline-flex min-h-11 shrink-0 items-center rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
             <span className="font-heading text-lg font-semibold tracking-display text-fg-primary">
               {chrome.name}
             </span>
