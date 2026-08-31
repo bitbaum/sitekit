@@ -19,7 +19,7 @@ export function StatsSection({
     <section>
       {section.heading && <SectionHeading index={index}>{section.heading}</SectionHeading>}
       <dl className="mt-6 grid grid-cols-1 divide-y divide-subtle border-y border-subtle sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-        {section.stats.map(stat => (
+        {section.stats.map((stat) => (
           <div key={stat.label} className="px-0 py-6 sm:px-6 sm:first:pl-0">
             <dt className="font-mono text-xs uppercase tracking-caps text-fg-tertiary">
               {stat.label}

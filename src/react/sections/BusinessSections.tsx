@@ -25,11 +25,7 @@ export function FeatureSection({
     <section id={section.anchor} className="scroll-mt-24">
       {section.heading && <SectionHeading index={index}>{section.heading}</SectionHeading>}
       <SectionBody>
-        <div
-          className={
-            section.image ? 'grid items-center gap-10 lg:grid-cols-2' : 'max-w-prose'
-          }
-        >
+        <div className={section.image ? 'grid items-center gap-10 lg:grid-cols-2' : 'max-w-prose'}>
           {section.image && (
             // Plain <img>: the package cannot depend on a framework's image
             // component, and a generated site's images are already sized by
@@ -87,7 +83,7 @@ export function ContactSection({
       {section.blurb && <div className="sm:pl-10">{<Blurb>{section.blurb}</Blurb>}</div>}
       <SectionBody>
         <div className="grid gap-6 md:grid-cols-2">
-          {section.locations.map(location => (
+          {section.locations.map((location) => (
             <div
               key={location.name}
               className="rounded-2xl border border-subtle bg-surface-raised p-6 sm:p-8"
@@ -115,7 +111,7 @@ export function ContactSection({
               )}
               {location.hours && location.hours.length > 0 && (
                 <ul className="mt-4 space-y-1 text-sm text-fg-muted">
-                  {location.hours.map(line => (
+                  {location.hours.map((line) => (
                     <li key={line}>{line}</li>
                   ))}
                 </ul>
@@ -144,7 +140,7 @@ export function FaqSection({
       {section.heading && <SectionHeading index={index}>{section.heading}</SectionHeading>}
       <SectionBody>
         <div className="max-w-prose space-y-4">
-          {section.items.map(item => (
+          {section.items.map((item) => (
             <details
               key={item.question}
               className="group rounded-xl border border-subtle bg-surface-raised open:border-accent"

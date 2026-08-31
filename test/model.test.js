@@ -4,8 +4,18 @@ import assert from 'node:assert/strict';
 import { siteNavItems, pageRendersOwnHeader, sitePageAt, href } from 'sitekit';
 
 const PAGES = [
-  { path: '', navLabel: 'Home', title: 'Home', sections: [{ kind: 'hero', statement: 'Hi', lead: [] }] },
-  { path: 'menu', navLabel: 'Menu', title: 'Menu', sections: [{ kind: 'prose', paragraphs: ['x'] }] },
+  {
+    path: '',
+    navLabel: 'Home',
+    title: 'Home',
+    sections: [{ kind: 'hero', statement: 'Hi', lead: [] }],
+  },
+  {
+    path: 'menu',
+    navLabel: 'Menu',
+    title: 'Menu',
+    sections: [{ kind: 'prose', paragraphs: ['x'] }],
+  },
   { path: 'imprint', title: 'Imprint', sections: [{ kind: 'prose', paragraphs: ['x'] }] },
 ];
 

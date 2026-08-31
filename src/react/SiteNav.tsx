@@ -30,7 +30,7 @@ export function SiteNav({ items, currentPath, Link = DefaultLink }: Props) {
       aria-label="Sections"
       className="scrollbar-hide -mx-1 flex flex-nowrap items-center gap-x-1 overflow-x-auto"
     >
-      {items.map(item => {
+      {items.map((item) => {
         const isCurrent = item.path === currentPath;
         return (
           <Link
