@@ -294,7 +294,7 @@ export const siteSpecSchema = z
       // actually click — checked per page, where the fragments live. Hero
       // actions get the same check when they point at a fragment.
       const anchors = new Set(
-        page.sections.flatMap(s => ('anchor' in s && s.anchor ? [s.anchor] : [])),
+        page.sections.flatMap((s) => ('anchor' in s && s.anchor ? [s.anchor] : [])),
       );
       page.sections.forEach((section, j) => {
         if (section.kind !== 'hero' || !section.actions) return;

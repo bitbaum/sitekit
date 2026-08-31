@@ -1,9 +1,9 @@
 // Flat config (ESLint 9). Recommended presets only — same reasoning as
 // limitkit: a small library does not need a bespoke rule set to maintain.
 // The floor is "lint runs and can fail", not "lint encodes taste".
-import js from '@eslint/js'
-import globals from 'globals'
-import tseslint from 'typescript-eslint'
+import js from '@eslint/js';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
@@ -21,4 +21,4 @@ export default tseslint.config(
     files: ['test/**/*.js'],
     languageOptions: { globals: { ...globals.node, ...globals.nodeBuiltin } },
   },
-)
+);

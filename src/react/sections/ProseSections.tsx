@@ -50,7 +50,7 @@ export function CardsSection({
       {section.blurb && <div className="sm:pl-10">{<Blurb>{section.blurb}</Blurb>}</div>}
       <SectionBody>
         <div className={`grid grid-cols-1 gap-x-8 gap-y-9 sm:grid-cols-2 ${columns}`}>
-          {section.cards.map(card => (
+          {section.cards.map((card) => (
             <article key={card.title} className="flex h-full flex-col border-t border-strong pt-4">
               {card.icon && (
                 <span aria-hidden className="mb-2 text-3xl">
@@ -83,7 +83,7 @@ export function DefinitionsSection({
       {section.blurb && <div className="sm:pl-10">{<Blurb>{section.blurb}</Blurb>}</div>}
       <SectionBody>
         <dl className="divide-y divide-subtle border-y border-subtle">
-          {section.items.map(item => (
+          {section.items.map((item) => (
             <div key={item.term} className="grid grid-cols-1 gap-1 py-4 sm:grid-cols-3 sm:gap-6">
               <dt className="text-sm font-semibold text-fg-primary">{item.term}</dt>
               <dd className="text-sm leading-relaxed text-fg-secondary sm:col-span-2">

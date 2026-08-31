@@ -19,4 +19,4 @@ export interface LinkProps {
 
 export type LinkLike = ComponentType<LinkProps>;
 
-export const DefaultLink: LinkLike = props => createElement('a', props);
+export const DefaultLink: LinkLike = (props) => createElement('a', props);

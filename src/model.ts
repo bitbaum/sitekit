@@ -17,7 +17,9 @@ export function validateSite(
   if (result.success) return { success: true, data: result.data };
   return {
     success: false,
-    errors: result.error.issues.map(issue => `${issue.path.join('.') || '(root)'}: ${issue.message}`),
+    errors: result.error.issues.map(
+      (issue) => `${issue.path.join('.') || '(root)'}: ${issue.message}`,
+    ),
   };
 }
 
@@ -25,7 +27,7 @@ export function validateSite(
 export function siteNavItems(pages: SitePage[]): SiteNavItem[] {
   return pages
     .filter((page): page is SitePage & { navLabel: string } => Boolean(page.navLabel))
-    .map(page => ({ path: page.path, label: page.navLabel }));
+    .map((page) => ({ path: page.path, label: page.navLabel }));
 }
 
 /**
@@ -39,7 +41,7 @@ export function pageRendersOwnHeader(page: SitePage): boolean {
 /** @returns the page at this path, or null. */
 export function sitePageAt(pages: SitePage[], path: string): SitePage | null {
   const normalised = path.replace(/^\/+|\/+$/g, '');
-  return pages.find(page => page.path === normalised) ?? null;
+  return pages.find((page) => page.path === normalised) ?? null;
 }
 
 /** An in-site link. Root is '/', everything else '/segment'. */

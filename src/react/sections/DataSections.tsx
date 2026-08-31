@@ -76,7 +76,10 @@ export function TableSection({ section }: { section: Extract<SiteSection, { kind
       )}
       {section.blurb && <Blurb>{section.blurb}</Blurb>}
       <div className="mt-4 overflow-x-auto">
-        <table className="w-full table-fixed border-collapse text-left" style={{ minWidth: '560px' }}>
+        <table
+          className="w-full table-fixed border-collapse text-left"
+          style={{ minWidth: '560px' }}
+        >
           <colgroup>
             {section.columns.map((_, i) => (
               <col key={i} style={{ width: i === 0 ? '34%' : `${restWidth}%` }} />
@@ -84,7 +87,7 @@ export function TableSection({ section }: { section: Extract<SiteSection, { kind
           </colgroup>
           <thead>
             <tr className="border-b border-strong">
-              {section.columns.map(column => (
+              {section.columns.map((column) => (
                 <th
                   key={column}
                   scope="col"
