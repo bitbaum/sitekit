@@ -122,7 +122,7 @@ Substrata's `app/globals.css` is the reference implementation of the contract.
 ## Verify
 
 ```bash
-npm run verify   # lint + typecheck + build + test — same command CI runs
+pnpm run verify  # lint + typecheck + build + test — same command CI runs
 ```
 
 Tests import the package by **name** (`sitekit`, `sitekit/react`), so a broken

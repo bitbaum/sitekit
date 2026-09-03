@@ -1,4 +1,4 @@
-# GOLDEN CI FLOOR — from dotfiles/templates/ci/ci-npm.yml.
+# GOLDEN CI FLOOR — pnpm. From dotfiles/templates/ci/.
 name: CI
 
 on:
@@ -20,16 +20,20 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # pnpm version comes from "packageManager" in package.json (SSOT);
+      # pnpm/action-setup@v6 errors if both are specified.
+      - uses: pnpm/action-setup@v6
+
       - uses: actions/setup-node@v7
         with:
           node-version: 24
-          cache: npm
+          cache: pnpm
 
       - name: Install
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       # SSOT: "verified" is defined ONCE, in package.json `verify`
       # (= lint + typecheck + build + test), and run identically here and
-      # locally via `npm run verify`. Change the checks in one place, not two.
+      # locally via `pnpm run verify`. Change the checks in one place, not two.
       - name: Verify
-        run: npm run verify
+        run: pnpm run verify
