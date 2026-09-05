@@ -17,7 +17,7 @@ import assert from 'node:assert/strict';
 import { createElement as h } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import { SiteMasthead } from 'sitekit/react';
+import { SiteMasthead } from '@bitbaum/sitekit/react';
 
 const CHROME = { name: 'Café Beispiel', tagline: 'Kaffee', footerNote: 'Run by its owners.' };
 const NAV = [

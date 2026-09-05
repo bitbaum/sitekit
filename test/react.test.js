@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createElement as h } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import { SiteSections, SiteMasthead, SiteFooter } from 'sitekit/react';
+import { SiteSections, SiteMasthead, SiteFooter } from '@bitbaum/sitekit/react';
 
 const SECTIONS = [
   { kind: 'hero', eyebrow: 'Zürich', statement: 'Coffee, done properly.', lead: ['Since 2011.'] },

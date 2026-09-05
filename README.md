@@ -1,4 +1,4 @@
-# sitekit
+# @bitbaum/sitekit
 
 A website as data.
 
@@ -29,16 +29,16 @@ every consumer gets it on the next version bump.
 ## Install
 
 ```bash
-pnpm add github:bitbaum/sitekit#v0.3.0
+pnpm add @bitbaum/sitekit
 ```
 
-ESM-only. `react >= 18` is a peer dependency of `sitekit/react`; the root
+ESM-only. `react >= 18` is a peer dependency of `@bitbaum/sitekit/react`; the root
 export is framework-free (a Node generator or CI check can use it without React).
 
 ## Use
 
 ```ts
-import { validateSite, siteNavItems, sitePageAt, pageRendersOwnHeader } from 'sitekit';
+import { validateSite, siteNavItems, sitePageAt, pageRendersOwnHeader } from '@bitbaum/sitekit';
 
 const result = validateSite(generatorOutput);
 if (!result.success) throw new Error(result.errors.join('\n'));
@@ -47,7 +47,7 @@ const site = result.data; // fully typed SiteSpec from here on
 
 ```tsx
 import Link from 'next/link';
-import { SiteMasthead, SiteFooter, SiteSections } from 'sitekit/react';
+import { SiteMasthead, SiteFooter, SiteSections } from '@bitbaum/sitekit/react';
 
 <SiteMasthead chrome={site.chrome} navItems={siteNavItems(site.pages)} currentPath={path} Link={Link} />
 <SiteSections sections={page.sections} />
@@ -65,7 +65,7 @@ numbers in it. So absence is first-class and typed. The generator emits a
 sidecar keyed by JSON path:
 
 ```ts
-import { assertDeliverable, notFoundPaths } from 'sitekit';
+import { assertDeliverable, notFoundPaths } from '@bitbaum/sitekit';
 
 const provenance = {
   'chrome.name':                    { kind: 'scraped', url: 'https://cafe-beispiel.ch/' },
@@ -107,7 +107,7 @@ With Tailwind 4, define them as `@theme` variables (`--color-fg-primary`,
 
 ```css
 @import 'tailwindcss';
-@source '../node_modules/sitekit/dist';
+@source '../node_modules/@bitbaum/sitekit/dist';
 ```
 
 Substrata's `app/globals.css` is the reference implementation of the contract.
@@ -125,5 +125,5 @@ Substrata's `app/globals.css` is the reference implementation of the contract.
 pnpm run verify  # lint + typecheck + build + test — same command CI runs
 ```
 
-Tests import the package by **name** (`sitekit`, `sitekit/react`), so a broken
+Tests import the package by **name** (`@bitbaum/sitekit`, `@bitbaum/sitekit/react`), so a broken
 `exports` map fails in CI, not at the first consumer.

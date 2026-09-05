@@ -1,8 +1,8 @@
 /**
- * sitekit — a website as data.
+ * @bitbaum/sitekit — a website as data.
  *
  * This root export is framework-free: schemas, inferred types, validation and
- * provenance. The React renderers live behind `sitekit/react` so a generator
+ * provenance. The React renderers live behind `@bitbaum/sitekit/react` so a generator
  * or a CI check can depend on the model without pulling in React.
  */
 
