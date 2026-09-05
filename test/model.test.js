@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { siteNavItems, pageRendersOwnHeader, sitePageAt, href } from 'sitekit';
+import { siteNavItems, pageRendersOwnHeader, sitePageAt, href } from '@bitbaum/sitekit';
 
 const PAGES = [
   {

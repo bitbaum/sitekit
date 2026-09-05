@@ -1,5 +1,5 @@
 {
-  "name": "sitekit",
+  "name": "@bitbaum/sitekit",
   "version": "0.3.0",
   "description": "A website as data: a closed union of section shapes validated at runtime, one set of React renderers, and per-field provenance so a generated site can prove it fabricated nothing.",
   "license": "MIT",
@@ -25,6 +25,10 @@
   "packageManager": "pnpm@11.25.0",
   "engines": {
     "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "files": [
     "dist"

@@ -6,7 +6,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { provenanceSchema, inferredPaths, notFoundPaths, assertDeliverable } from 'sitekit';
+import {
+  provenanceSchema,
+  inferredPaths,
+  notFoundPaths,
+  assertDeliverable,
+} from '@bitbaum/sitekit';
 
 const PROV = {
   'chrome.name': { kind: 'scraped', url: 'https://cafe-beispiel.ch/' },

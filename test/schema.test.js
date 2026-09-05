@@ -6,7 +6,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { validateSite, siteSectionSchema } from 'sitekit';
+import { validateSite, siteSectionSchema } from '@bitbaum/sitekit';
 
 /** A minimal spec that exercises every section kind once. */
 function fullSpec() {

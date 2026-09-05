@@ -1,5 +1,5 @@
 /**
- * sitekit/react — the one set of renderers every generated site shares.
+ * @bitbaum/sitekit/react — the one set of renderers every generated site shares.
  *
  * Emits SEMANTIC utility classes only (`text-fg-primary`, `bg-surface-page`,
  * `font-heading`, …) and ships no colours, faces or radii: each consumer
