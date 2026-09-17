@@ -127,3 +127,9 @@ pnpm run verify  # lint + typecheck + build + test — same command CI runs
 
 Tests import the package by **name** (`@bitbaum/sitekit`, `@bitbaum/sitekit/react`), so a broken
 `exports` map fails in CI, not at the first consumer.
+
+---
+
+Part of **[bitbaum](https://bitbaum.orangecat.ch)** — AI-native products on open
+infrastructure, built in Zürich. Every package here lists the apps that use it:
+**[which apps use sitekit](https://bitbaum.orangecat.ch/packages/#sitekit)**.
