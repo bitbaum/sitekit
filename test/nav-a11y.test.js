@@ -65,6 +65,19 @@ test('the masthead does not grow to pay for the bigger targets', () => {
   );
 });
 
+test('a nav too wide for the wordmark row drops to one row of its own', () => {
+  // Without flex-wrap the nav shared a phone row with the wordmark and got
+  // ~290px: a three-section site showed its third label as a lone "Ü".
+  const html = masthead();
+  assert.ok(
+    /class="flex flex-wrap items-center justify-between/.test(html),
+    'masthead row must wrap',
+  );
+  const nav = html.slice(html.indexOf('<nav'), html.indexOf('>', html.indexOf('<nav')));
+  assert.ok(nav.includes('flex-nowrap'), 'the nav itself must stay one scrolling row');
+  assert.ok(nav.includes('overflow-x-auto'));
+});
+
 test('the active item is still announced', () => {
   // Guard against a refactor of these classes dropping what already worked.
   assert.ok(masthead('menu').includes('aria-current="page"'));

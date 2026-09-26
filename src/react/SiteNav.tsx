@@ -28,7 +28,7 @@ export function SiteNav({ items, currentPath, Link = DefaultLink }: Props) {
     <nav
       data-sitekit-nav
       aria-label="Sections"
-      className="scrollbar-hide -mx-1 flex flex-nowrap items-center gap-x-1 overflow-x-auto"
+      className="scrollbar-hide -mx-1 flex max-w-full flex-nowrap items-center gap-x-1 overflow-x-auto"
     >
       {items.map((item) => {
         const isCurrent = item.path === currentPath;
