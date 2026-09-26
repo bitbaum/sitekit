@@ -27,13 +27,17 @@ export function SiteMasthead({ chrome, navItems, currentPath, Link = DefaultLink
   return (
     <header className="sticky top-0 z-30 border-b border-subtle bg-surface-page/85 backdrop-blur">
       <div className="mx-auto max-w-shell px-4 sm:px-6 lg:px-8">
-        {/* One row at every width. Wrapping the nav onto a second line makes a
-            sticky masthead eat a third of a phone screen, so on narrow
-            viewports the nav scrolls sideways instead. */}
-        {/* py-2, not py-4: the nav's items are now 44px tall (the touch floor),
+        {/* One row while the nav fits beside the wordmark. When it does not,
+            the nav drops to a row of its own - exactly one, never more: the
+            nav itself never wraps, so a long one still scrolls sideways there
+            instead of stacking into a masthead that eats a phone screen.
+            Sharing the row with the wordmark on a phone left the nav ~290px,
+            and camille's third section painted as a lone "Ü" at 390px (fleet
+            render sweep, nav rule 7) - a label nobody reads as a link. */}
+        {/* py-2, not py-4: the nav's items are 44px tall (the touch floor),
             and the row pays for that out of its own padding so the masthead
-            keeps the same height it always had. */}
-        <div className="flex items-center justify-between gap-6 py-2">
+            keeps the same height it always had on one row. */}
+        <div className="flex flex-wrap items-center justify-between gap-x-6 py-2">
           <Link
             href={href()}
             className="inline-flex min-h-11 shrink-0 items-center rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
