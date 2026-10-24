@@ -75,6 +75,7 @@ test('footer groups have semantic labels and retain the legacy flat link contrac
   );
   assert.ok(html.includes('<h2>Product</h2>'));
   assert.ok(html.includes('<h2>Resources</h2>'));
+  assert.ok(html.includes('--sk-footer-columns:2'));
   assert.ok(html.includes('href="/analyze"'));
   assert.ok(html.includes('aria-label="Footer navigation"'));
 });

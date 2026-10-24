@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 /**
  * Masthead and footer.
  *
@@ -131,7 +131,11 @@ export function SiteFooter({
               <p>{chrome.footerNote}</p>
             </div>
             {groups ? (
-              <nav aria-label={label} className="sk-footer-groups">
+              <nav
+                aria-label={label}
+                className="sk-footer-groups"
+                style={{ '--sk-footer-columns': groups.length } as CSSProperties}
+              >
                 {groups.map((group) => (
                   <div className="sk-footer-group" key={group.label}>
                     <h2>{group.label}</h2>

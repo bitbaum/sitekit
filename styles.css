@@ -245,8 +245,8 @@
   display: grid;
   gap: 1rem;
   color: var(--sk-muted, #555);
-  font-size: clamp(1.05rem, 2vw, 1.2rem);
-  line-height: 1.75;
+  font-size: var(--sk-lead-size, clamp(1.05rem, 2vw, 1.2rem));
+  line-height: var(--sk-lead-leading, 1.75);
 }
 .sk-hero-actions {
   display: grid;
