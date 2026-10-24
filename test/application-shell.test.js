@@ -61,3 +61,20 @@ test('standalone styles ship through the public package and define touch and key
   assert.ok(css.includes(':focus-visible'));
   assert.match(css, /@media\s*\(max-width:\s*1100px\)/);
 });
+
+test('footer groups have semantic labels and retain the legacy flat link contract', () => {
+  const html = renderToStaticMarkup(
+    h(SiteFooter, {
+      chrome,
+      appearance: 'application',
+      groups: [
+        { label: 'Product', links: [{ href: '/analyze', label: 'Examine text' }] },
+        { label: 'Resources', links: [{ href: '/method', label: 'Our method' }] },
+      ],
+    }),
+  );
+  assert.ok(html.includes('<h2>Product</h2>'));
+  assert.ok(html.includes('<h2>Resources</h2>'));
+  assert.ok(html.includes('href="/analyze"'));
+  assert.ok(html.includes('aria-label="Footer navigation"'));
+});

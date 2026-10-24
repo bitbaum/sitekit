@@ -105,6 +105,7 @@ export function SiteFooter({
   chrome,
   appearance,
   links = [],
+  groups,
   Link = DefaultLink,
   label = 'Footer navigation',
   extra,
@@ -112,6 +113,8 @@ export function SiteFooter({
   chrome: SiteChromeSpec;
   appearance?: 'application';
   links?: Array<{ href: string; label: string }>;
+  /** Optional semantic link groups; flat links remain supported. */
+  groups?: Array<{ label: string; links: Array<{ href: string; label: string }> }>;
   Link?: LinkLike;
   label?: string;
   extra?: ReactNode;
@@ -127,13 +130,28 @@ export function SiteFooter({
               </Link>
               <p>{chrome.footerNote}</p>
             </div>
-            <nav aria-label={label}>
-              {links.map((item) => (
-                <Link key={item.href} href={item.href}>
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
+            {groups ? (
+              <nav aria-label={label} className="sk-footer-groups">
+                {groups.map((group) => (
+                  <div className="sk-footer-group" key={group.label}>
+                    <h2>{group.label}</h2>
+                    {group.links.map((item) => (
+                      <Link key={item.href} href={item.href}>
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                ))}
+              </nav>
+            ) : (
+              <nav aria-label={label}>
+                {links.map((item) => (
+                  <Link key={item.href} href={item.href}>
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+            )}
           </div>
           <div className="sk-footer-bottom">
             <span>

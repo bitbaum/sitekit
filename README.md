@@ -154,3 +154,9 @@ Tests import the package by **name** (`@bitbaum/sitekit`, `@bitbaum/sitekit/reac
 Part of **[bitbaum](https://bitbaum.orangecat.ch)** — AI-native products on open
 infrastructure, built in Zürich. Every package here lists the apps that use it:
 **[which apps use sitekit](https://bitbaum.orangecat.ch/packages/#sitekit)**.
+
+Application footers can pass `groups: [{ label, links: [{ href, label }] }]` for
+semantic navigation groups. Existing flat `links` remain supported. Consumers
+can configure `--sk-header-height`, `--sk-mobile-header-height`,
+`--sk-display-weight`, `--sk-display-leading`, `--sk-display-tracking` and
+`--sk-footer-gap` through their theme adapter, without replacing shared markup.
