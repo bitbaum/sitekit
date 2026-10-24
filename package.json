@@ -1,6 +1,6 @@
 {
   "name": "@bitbaum/sitekit",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "A website as data: a closed union of section shapes validated at runtime, one set of React renderers, and per-field provenance so a generated site can prove it fabricated nothing.",
   "license": "MIT",
   "author": "Mao Nakamoto",
@@ -21,7 +21,9 @@
     "headless-cms"
   ],
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "packageManager": "pnpm@11.25.0",
   "engines": {
     "node": ">=20"
@@ -31,7 +33,8 @@
     "provenance": true
   },
   "files": [
-    "dist"
+    "dist",
+    "styles.css"
   ],
   "exports": {
     ".": {
@@ -41,7 +44,8 @@
     "./react": {
       "types": "./dist/react/index.d.ts",
       "default": "./dist/react/index.js"
-    }
+    },
+    "./styles.css": "./styles.css"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",

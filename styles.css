@@ -1,0 +1,289 @@
+/* Shared application chrome. Consumers supply semantic theme variables only. */
+:where(.sk-masthead, .sk-footer) {
+  color: var(--sk-fg, CanvasText);
+  font-family: var(--sk-font, system-ui, sans-serif);
+}
+.sk-shell-frame {
+  width: min(100%, var(--sk-width, 76rem));
+  margin-inline: auto;
+  padding-inline: var(--sk-gutter, clamp(1rem, 4vw, 2.5rem));
+}
+.sk-masthead {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--sk-bg, Canvas);
+  border-bottom: 1px solid var(--sk-line, #d6d6d6);
+}
+.sk-masthead-row {
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2vw, 2rem);
+}
+.sk-brand,
+.sk-footer-brand {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 44px;
+  white-space: nowrap;
+  font-size: 1.2rem;
+}
+.sk-brand img,
+.sk-brand svg {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.sk-desktop-nav {
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.sk-desktop-nav a,
+.sk-mobile-menu nav a,
+.sk-footer nav a {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  color: var(--sk-muted, #555);
+  text-decoration: none;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+.sk-desktop-nav a {
+  padding: 0.75rem 0.7rem;
+  border-radius: var(--sk-radius, 0.5rem);
+  white-space: nowrap;
+}
+.sk-desktop-nav a[aria-current='page'],
+.sk-mobile-menu a[aria-current='page'] {
+  background: var(--sk-raised, #f0f0f0);
+  color: var(--sk-fg, CanvasText);
+  font-weight: 600;
+}
+.sk-account-actions {
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+.sk-account-actions > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  color: var(--sk-fg, CanvasText);
+  border: 1px solid var(--sk-line, #d6d6d6);
+  border-radius: var(--sk-radius, 0.5rem);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+.sk-mobile-menu {
+  display: none;
+}
+.sk-mobile-menu summary {
+  cursor: pointer;
+  list-style: none;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--sk-line, #d6d6d6);
+  border-radius: var(--sk-radius, 0.5rem);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.sk-mobile-menu summary::-webkit-details-marker {
+  display: none;
+}
+.sk-mobile-menu nav {
+  position: absolute;
+  top: 100%;
+  left: var(--sk-gutter, 1rem);
+  right: var(--sk-gutter, 1rem);
+  background: var(--sk-bg, Canvas);
+  border: 1px solid var(--sk-line, #d6d6d6);
+  border-radius: var(--sk-radius, 0.5rem);
+  box-shadow: 0 18px 40px #00000014;
+  padding: 0.5rem;
+  max-height: 75dvh;
+  overflow-y: auto;
+}
+.sk-mobile-menu nav a {
+  padding: 0.8rem 1rem;
+  border-radius: var(--sk-radius, 0.5rem);
+}
+.sk-footer {
+  margin-top: clamp(4rem, 8vw, 7rem);
+  border-top: 1px solid var(--sk-line, #d6d6d6);
+  background: var(--sk-bg, Canvas);
+  padding-block: 3rem 1.5rem;
+}
+.sk-footer-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+.sk-footer-top p {
+  margin-top: 0.5rem;
+  color: var(--sk-muted, #555);
+  max-width: 36ch;
+  line-height: 1.7;
+  font-size: 0.875rem;
+}
+.sk-footer nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 1.5rem;
+}
+.sk-footer nav a {
+  padding-block: 0.5rem;
+}
+.sk-footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--sk-line, #d6d6d6);
+  color: var(--sk-muted, #555);
+  font-size: 0.75rem;
+}
+.sk-footer-bottom a {
+  color: inherit;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.sk-skip {
+  position: fixed;
+  left: 1rem;
+  top: -10rem;
+  z-index: 100;
+  padding: 1rem;
+  color: var(--sk-bg, Canvas);
+  background: var(--sk-fg, CanvasText);
+  border-radius: 0.5rem;
+}
+.sk-skip:focus {
+  top: 1rem;
+}
+:where(.sk-masthead, .sk-footer) :is(a, summary, button):focus-visible,
+.sk-skip:focus-visible {
+  outline: 3px solid var(--sk-focus, Highlight);
+  outline-offset: 3px;
+}
+@media (max-width: 1100px) {
+  .sk-desktop-nav {
+    display: none;
+  }
+  .sk-mobile-menu {
+    display: block;
+    order: 3;
+  }
+  .sk-mobile-menu summary {
+    display: flex;
+  }
+  .sk-masthead-row {
+    gap: 0.5rem;
+    min-height: 72px;
+  }
+  .sk-brand {
+    margin-inline-end: auto;
+  }
+}
+@media (max-width: 600px) {
+  .sk-footer-top {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .sk-brand {
+    font-size: 1.05rem;
+    gap: 0.5rem;
+  }
+  .sk-account-actions > a {
+    padding-inline: 0.75rem;
+  }
+}
+
+.sk-hero {
+  padding-block: var(--sk-hero-space, clamp(3rem, 7vw, 6rem));
+}
+.sk-eyebrow {
+  font: 600 0.7rem/1.5 var(--sk-mono, monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: var(--sk-muted, #555);
+}
+.sk-hero-title {
+  margin-block: 1rem 1.5rem;
+  font-family: var(--sk-display, Georgia, serif);
+  font-size: var(--sk-title-size, clamp(3rem, 6vw, 5rem));
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+  max-width: var(--sk-title-measure, 20ch);
+}
+.sk-hero-lead {
+  max-width: var(--sk-measure, 64ch);
+  display: grid;
+  gap: 1rem;
+  color: var(--sk-muted, #555);
+  font-size: clamp(1.05rem, 2vw, 1.2rem);
+  line-height: 1.75;
+}
+.sk-hero-actions {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  max-width: 36rem;
+}
+.sk-hero-actions a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.8rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: var(--sk-radius, 0.5rem);
+  text-decoration: none;
+  text-align: center;
+}
+.sk-primary-action {
+  background: var(--sk-fg, CanvasText);
+  color: var(--sk-bg, Canvas);
+  border: 1px solid var(--sk-fg, CanvasText);
+}
+.sk-secondary-action {
+  background: transparent;
+  color: var(--sk-fg, CanvasText);
+  border: 1px solid var(--sk-line, #d6d6d6);
+}
+.sk-hero-actions a:focus-visible {
+  outline: 3px solid var(--sk-focus, Highlight);
+  outline-offset: 3px;
+}
+@media (max-width: 420px) {
+  .sk-hero-actions {
+    grid-auto-flow: row;
+  }
+}
