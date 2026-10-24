@@ -10,6 +10,7 @@
 import { href } from '../model.js';
 import type { SiteNavItem } from '../schema.js';
 import { DefaultLink, type LinkLike } from './link.js';
+import { MenuDismiss } from './MenuDismiss.js';
 import { NavAutoScroll } from './NavAutoScroll.js';
 
 interface Props {
@@ -21,13 +22,51 @@ interface Props {
   currentPath: string;
   /** Framework link component (e.g. next/link). Defaults to a plain anchor. */
   Link?: LinkLike;
+  appearance?: 'application';
+  label?: string;
+  menuLabel?: string;
 }
 
-export function SiteNav({ items, currentPath, Link = DefaultLink }: Props) {
+export function SiteNav({
+  items,
+  currentPath,
+  Link = DefaultLink,
+  appearance,
+  label = 'Sections',
+  menuLabel = 'Menu',
+}: Props) {
+  if (appearance === 'application') {
+    if (items.length === 0) return null;
+    const links = () =>
+      items.map((item) => (
+        <Link
+          key={item.path}
+          href={href(item.path)}
+          aria-current={item.path === currentPath ? 'page' : undefined}
+        >
+          {item.label}
+        </Link>
+      ));
+    return (
+      <>
+        <nav className="sk-desktop-nav" aria-label={label} data-sitekit-nav>
+          {links()}
+        </nav>
+        <details className="sk-mobile-menu" data-sitekit-menu>
+          <summary>
+            {menuLabel}
+            <span aria-hidden="true">☰</span>
+          </summary>
+          <nav aria-label={label}>{links()}</nav>
+        </details>
+        <MenuDismiss currentPath={currentPath} />
+      </>
+    );
+  }
   return (
     <nav
       data-sitekit-nav
-      aria-label="Sections"
+      aria-label={label}
       className="scrollbar-hide -mx-1 flex max-w-full flex-nowrap items-center gap-x-1 overflow-x-auto"
     >
       {items.map((item) => {

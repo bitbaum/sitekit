@@ -8,7 +8,38 @@
 
 import type { SiteSection } from '../../schema.js';
 
-export function HeroSection({ section }: { section: Extract<SiteSection, { kind: 'hero' }> }) {
+export function HeroSection({
+  section,
+  appearance,
+}: {
+  section: Extract<SiteSection, { kind: 'hero' }>;
+  appearance?: 'application';
+}) {
+  if (appearance === 'application')
+    return (
+      <section className="sk-hero">
+        {section.eyebrow && <p className="sk-eyebrow">{section.eyebrow}</p>}
+        <h1 className="sk-hero-title">{section.statement}</h1>
+        <div className="sk-hero-lead">
+          {section.lead.map((text, i) => (
+            <p key={i}>{text}</p>
+          ))}
+        </div>
+        {!!section.actions?.length && (
+          <div className="sk-hero-actions">
+            {section.actions.map((action, i) => (
+              <a
+                className={i === 0 ? 'sk-primary-action' : 'sk-secondary-action'}
+                key={action.href}
+                href={action.href}
+              >
+                {action.label}
+              </a>
+            ))}
+          </div>
+        )}
+      </section>
+    );
   return (
     <section className="border-b border-subtle pb-12">
       {section.eyebrow && (

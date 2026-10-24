@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 /**
  * Masthead and footer.
  *
@@ -21,9 +22,55 @@ interface Props {
   currentPath: string;
   /** Framework link component (e.g. next/link). Defaults to a plain anchor. */
   Link?: LinkLike;
+  /** Opt-in application shell, styled by @bitbaum/sitekit/styles.css. */
+  appearance?: 'application';
+  brand?: ReactNode;
+  actions?: ReactNode;
+  mainId?: string;
+  skipLabel?: string;
+  navLabel?: string;
+  menuLabel?: string;
 }
 
-export function SiteMasthead({ chrome, navItems, currentPath, Link = DefaultLink }: Props) {
+export function SiteMasthead({
+  chrome,
+  navItems,
+  currentPath,
+  Link = DefaultLink,
+  appearance,
+  brand,
+  actions,
+  mainId,
+  skipLabel = 'Skip to content',
+  navLabel = 'Main navigation',
+  menuLabel = 'Menu',
+}: Props) {
+  if (appearance === 'application')
+    return (
+      <>
+        {mainId && (
+          <a className="sk-skip" href={'#' + mainId}>
+            {skipLabel}
+          </a>
+        )}
+        <header className="sk-masthead">
+          <div className="sk-shell-frame sk-masthead-row">
+            <Link href="/" className="sk-brand">
+              {brand ?? chrome.name}
+            </Link>
+            <SiteNav
+              items={navItems}
+              currentPath={currentPath}
+              Link={Link}
+              appearance="application"
+              label={navLabel}
+              menuLabel={menuLabel}
+            />
+            {actions && <div className="sk-account-actions">{actions}</div>}
+          </div>
+        </header>
+      </>
+    );
   return (
     <header className="sticky top-0 z-30 border-b border-subtle bg-surface-page/85 backdrop-blur">
       <div className="mx-auto max-w-shell px-4 sm:px-6 lg:px-8">
@@ -54,7 +101,49 @@ export function SiteMasthead({ chrome, navItems, currentPath, Link = DefaultLink
   );
 }
 
-export function SiteFooter({ chrome }: { chrome: SiteChromeSpec }) {
+export function SiteFooter({
+  chrome,
+  appearance,
+  links = [],
+  Link = DefaultLink,
+  label = 'Footer navigation',
+  extra,
+}: {
+  chrome: SiteChromeSpec;
+  appearance?: 'application';
+  links?: Array<{ href: string; label: string }>;
+  Link?: LinkLike;
+  label?: string;
+  extra?: ReactNode;
+}) {
+  if (appearance === 'application')
+    return (
+      <footer className="sk-footer">
+        <div className="sk-shell-frame">
+          <div className="sk-footer-top">
+            <div>
+              <Link href="/" className="sk-footer-brand">
+                {chrome.name}
+              </Link>
+              <p>{chrome.footerNote}</p>
+            </div>
+            <nav aria-label={label}>
+              {links.map((item) => (
+                <Link key={item.href} href={item.href}>
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+          <div className="sk-footer-bottom">
+            <span>
+              © {new Date().getFullYear()} {chrome.name}
+            </span>
+            {extra}
+          </div>
+        </div>
+      </footer>
+    );
   return (
     <footer className="mt-24 border-t border-subtle">
       <div className="mx-auto max-w-shell px-4 py-12 sm:px-6 lg:px-8">

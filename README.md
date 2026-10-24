@@ -58,6 +58,27 @@ import { SiteMasthead, SiteFooter, SiteSections } from '@bitbaum/sitekit/react';
 correct everywhere; a Next.js app passes `next/link` to get client-side
 navigation back.
 
+## Application shell
+
+Product apps use the same masthead, navigation and footer with the application
+appearance. Import `@bitbaum/sitekit/styles.css` once. No Tailwind setup is
+required for this appearance; `--sk-*` variables map it to the product's shared
+design tokens. Existing document sites keep their utility-class appearance.
+
+```tsx
+<SiteMasthead appearance="application" chrome={chrome} navItems={nav}
+  currentPath="analyze" mainId="main-content" Link={Link}
+  brand={<Brand />} actions={<AccountControl />} />
+<SiteFooter appearance="application" chrome={chrome} Link={Link}
+  links={[{ href: '/roadmap', label: 'Roadmap' }]} extra="Beta" />
+```
+
+The package owns the responsive menu, its native no-JavaScript fallback,
+Escape/outside/route dismissal, skip link, active states, touch targets and
+footer layout. Products supply labels, navigation data, identity and account
+slots. Fix shared chrome here, then release and update consumers through their
+normal dependency checks and deployment pipeline.
+
 ## Provenance — the check behind "fabricate no facts"
 
 A closed schema invites completion: a model handed a `stats` section wants
