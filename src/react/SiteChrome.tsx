@@ -65,6 +65,7 @@ export function SiteMasthead({
               appearance="application"
               label={navLabel}
               menuLabel={menuLabel}
+              menuActions={actions}
             />
             {actions && <div className="sk-account-actions">{actions}</div>}
           </div>

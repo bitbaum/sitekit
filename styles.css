@@ -207,6 +207,39 @@
     margin-inline-end: auto;
   }
 }
+.sk-menu-actions {
+  display: none;
+}
+/* The narrowest phones (up to 380px, which takes in 360px Android): brand, an
+   account action and the menu button do not fit in one row (AOZ at 320px
+   needed 369px and scrolled sideways by 49px), so the action moves to the foot
+   of the menu, and only when there is a menu to hold it. */
+@media (max-width: 380px) {
+  .sk-masthead-row:has(.sk-mobile-menu) > .sk-account-actions {
+    display: none;
+  }
+  .sk-menu-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--sk-line, #d6d6d6);
+  }
+  .sk-menu-actions > a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.65rem 1rem;
+    color: var(--sk-fg, CanvasText);
+    border: 1px solid var(--sk-line, #d6d6d6);
+    border-radius: var(--sk-radius, 0.5rem);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+}
 @media (max-width: 600px) {
   .sk-footer-top {
     grid-template-columns: 1fr;
