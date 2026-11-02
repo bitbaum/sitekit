@@ -79,3 +79,35 @@ test('footer groups have semantic labels and retain the legacy flat link contrac
   assert.ok(html.includes('href="/analyze"'));
   assert.ok(html.includes('aria-label="Footer navigation"'));
 });
+
+test('on the narrowest phones the account action moves into the menu, never off the screen', () => {
+  const html = renderToStaticMarkup(
+    h(SiteMasthead, {
+      chrome,
+      appearance: 'application',
+      currentPath: '',
+      navItems: [{ path: 'blog', label: 'Blog' }],
+      actions: h('a', { href: '/login' }, 'Sign in'),
+    }),
+  );
+  const menu = html.slice(html.indexOf('sk-mobile-menu'), html.indexOf('</details>'));
+  assert.ok(menu.includes('sk-menu-actions'), 'the menu carries the actions');
+  assert.ok(menu.includes('href="/login"'), 'the same action, one tap away');
+  const css = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
+  assert.match(
+    css,
+    /@media \(max-width: 380px\)[\s\S]*\.sk-masthead-row:has\(\.sk-mobile-menu\) > \.sk-account-actions \{\s*display: none;/,
+    'the row drops its action only where a menu holds it',
+  );
+  // Without nav items there is no menu, and the action stays in the row.
+  const bare = renderToStaticMarkup(
+    h(SiteMasthead, {
+      chrome,
+      appearance: 'application',
+      currentPath: '',
+      navItems: [],
+      actions: h('a', { href: '/login' }, 'Sign in'),
+    }),
+  );
+  assert.ok(!bare.includes('sk-menu-actions') && bare.includes('sk-account-actions'));
+});

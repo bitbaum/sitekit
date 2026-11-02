@@ -7,6 +7,7 @@
  * `NavAutoScroll`, which takes only a string.
  */
 
+import type { ReactNode } from 'react';
 import { href } from '../model.js';
 import type { SiteNavItem } from '../schema.js';
 import { DefaultLink, type LinkLike } from './link.js';
@@ -25,6 +26,12 @@ interface Props {
   appearance?: 'application';
   label?: string;
   menuLabel?: string;
+  /**
+   * The masthead's account actions, repeated at the foot of the mobile menu.
+   * On the narrowest phones the row has no room for them beside the brand and
+   * the menu button, so styles.css shows them here instead (one tap away).
+   */
+  menuActions?: ReactNode;
 }
 
 export function SiteNav({
@@ -34,6 +41,7 @@ export function SiteNav({
   appearance,
   label = 'Sections',
   menuLabel = 'Menu',
+  menuActions,
 }: Props) {
   if (appearance === 'application') {
     if (items.length === 0) return null;
@@ -57,7 +65,10 @@ export function SiteNav({
             {menuLabel}
             <span aria-hidden="true">☰</span>
           </summary>
-          <nav aria-label={label}>{links()}</nav>
+          <nav aria-label={label}>
+            {links()}
+            {menuActions && <div className="sk-menu-actions">{menuActions}</div>}
+          </nav>
         </details>
         <MenuDismiss currentPath={currentPath} />
       </>
