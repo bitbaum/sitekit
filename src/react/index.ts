@@ -10,6 +10,7 @@
 export { SiteSections } from './SiteSections.js';
 export { SiteMasthead, SiteFooter } from './SiteChrome.js';
 export { SiteNav } from './SiteNav.js';
+export { SiteTabBar, type SiteTabItem } from './SiteTabBar.js';
 export { NavAutoScroll } from './NavAutoScroll.js';
 export { DefaultLink, type LinkLike, type LinkProps } from './link.js';
 export { SectionHeading, Blurb, SectionBody } from './sections/Primitives.js';
