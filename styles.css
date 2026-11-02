@@ -306,3 +306,57 @@
     gap: 1.5rem;
   }
 }
+/* Mobile bottom tab bar (SiteTabBar). Hidden from --sk-tabbar-breakpoint up. */
+.sk-tabbar {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 45;
+  display: flex;
+  justify-content: space-around;
+  gap: 2px;
+  padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
+  background: var(--sk-bg, Canvas);
+  border-top: 1px solid var(--sk-line, #d6d6d6);
+  font-family: var(--sk-font, system-ui, sans-serif);
+}
+.sk-tab {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 2px;
+  border-radius: 10px;
+  color: var(--sk-muted, #555);
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.sk-tab-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+.sk-tab-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.sk-tab[aria-current='page'] {
+  color: var(--sk-fg, CanvasText);
+  background: var(--sk-tab-active, color-mix(in srgb, currentColor 8%, transparent));
+}
+.sk-tab:focus-visible {
+  outline: 2px solid var(--sk-focus, Highlight);
+  outline-offset: 2px;
+}
+.sk-tabbar-spacer {
+  height: var(--sk-tabbar-height, 68px);
+}
+@media (min-width: 48rem) {
+  .sk-tabbar,
+  .sk-tabbar-spacer {
+    display: none;
+  }
+}

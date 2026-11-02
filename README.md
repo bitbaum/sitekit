@@ -160,3 +160,9 @@ semantic navigation groups. Existing flat `links` remain supported. Consumers
 can configure `--sk-header-height`, `--sk-mobile-header-height`,
 `--sk-display-weight`, `--sk-display-leading`, `--sk-display-tracking` and
 `--sk-footer-gap` through their theme adapter, without replacing shared markup.
+
+## Mobile tab bar
+
+`SiteTabBar` renders a fixed bottom navigation for small screens (hidden from
+48rem up, where the masthead nav takes over). Pass 3–5 `{ path, label, icon }`
+items and the current path; it renders its own spacer so content is not hidden.
