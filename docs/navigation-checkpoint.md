@@ -31,3 +31,11 @@ runner Chrome, with the same browser regression and a Playwright installation
 fallback. Apply the same selection to release verification. BiasLens config is
 prepared on `feat/grouped-sitekit-navigation`; its release pin and checks await
 the verified package release.
+
+
+SiteKit #44 merged as `dd081d8766ea02e687dea524edf9a7c5bc1b74d7`; main CI
+42129403111 passed in 40 seconds. Release 42129551419 verified and created
+v0.6.0 at `f183a4d4fd16337d58a46f91760cd7ede8ca8a8f`. npm publication
+42129643231 failed because its separate verify job had no configured browser.
+Prepare the same runner browser before publish verification, then release a
+new patch version. Do not move v0.6.0 or call its npm publication successful.

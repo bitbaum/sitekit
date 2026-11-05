@@ -68,6 +68,16 @@ jobs:
       - if: steps.check.outputs.publish == 'true'
         run: pnpm install --frozen-lockfile --ignore-scripts
 
+      - name: Prepare browser for required verification
+        if: steps.check.outputs.publish == 'true'
+        run: |
+          browser="$(command -v google-chrome || command -v chromium || true)"
+          if [ -n "$browser" ]; then
+            echo "PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=$browser" >> "$GITHUB_ENV"
+          else
+            pnpm exec playwright install --with-deps chromium
+          fi
+
       # Never publish something that would not have passed CI.
       - if: steps.check.outputs.publish == 'true'
         run: pnpm run verify
