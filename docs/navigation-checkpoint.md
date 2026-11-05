@@ -39,3 +39,12 @@ v0.6.0 at `f183a4d4fd16337d58a46f91760cd7ede8ca8a8f`. npm publication
 42129643231 failed because its separate verify job had no configured browser.
 Prepare the same runner browser before publish verification, then release a
 new patch version. Do not move v0.6.0 or call its npm publication successful.
+
+
+BiasLens screenshot review of installed npm 0.6.1 caught two integration layout
+issues: desktop panels were positioned against the viewport rather than the
+bounded header frame; at 320px the inset navigation clipped a wider account
+popover. Position grouped panels relative to the masthead frame and use the
+full panel width on the narrowest phones. BiasLens adds a regression against
+the actual AccountKit popup bounds. Reverify and release a new patch; its
+consumer checks and deployment remain required.

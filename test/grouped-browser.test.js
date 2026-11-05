@@ -56,6 +56,11 @@ window.navigate();`,
       const bounds = await page.locator('.sk-grouped-panel').boundingBox();
       assert.ok(bounds.x >= 0 && bounds.x + bounds.width <= width, `panel fits ${width}`);
       assert.ok(bounds.y + bounds.height <= 900, `panel height fits ${width}`);
+      const frame = await page.locator('.sk-masthead-row').boundingBox();
+      assert.ok(
+        bounds.x >= frame.x && bounds.x + bounds.width <= frame.x + frame.width,
+        `panel aligns with its header frame at ${width}`,
+      );
       assert.equal(
         await page.locator('[aria-current="page"]').textContent(),
         'WriteStart an article.',
