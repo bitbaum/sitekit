@@ -128,7 +128,12 @@ jobs:
       - name: Install Chromium when the package uses Playwright
         run: |
           if node -e 'const p = require("./package.json"); const d = { ...p.dependencies, ...p.devDependencies }; process.exit(d.playwright || d["@playwright/test"] ? 0 : 1)'; then
-            pnpm exec playwright install --with-deps chromium
+            browser="$(command -v google-chrome || command -v chromium || true)"
+            if [ -n "$browser" ]; then
+              echo "PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=$browser" >> "$GITHUB_ENV"
+            else
+              pnpm exec playwright install --with-deps chromium
+            fi
           fi
 
       # Inputs reach the shell as environment variables, never pasted into the
