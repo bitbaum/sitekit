@@ -32,6 +32,9 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
+      - name: Install browser
+        run: pnpm exec playwright install --with-deps chromium
+
       # SSOT: "verified" is defined ONCE, in package.json `verify`
       # (= lint + typecheck + build + test), and run identically here and
       # locally via `pnpm run verify`. Change the checks in one place, not two.

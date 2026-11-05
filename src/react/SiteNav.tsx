@@ -14,6 +14,11 @@ import { DefaultLink, type LinkLike } from './link.js';
 import { MenuDismiss } from './MenuDismiss.js';
 import { NavAutoScroll } from './NavAutoScroll.js';
 
+export interface SiteNavGroup {
+  label: string;
+  items: Array<SiteNavItem & { description?: string }>;
+}
+
 interface Props {
   /**
    * Deliberately NOT `SitePage[]`. Everything the nav receives ends up in the
@@ -21,6 +26,8 @@ interface Props {
    */
   items: SiteNavItem[];
   currentPath: string;
+  /** Opt-in grouped application menu. Flat items remain unchanged when omitted. */
+  groups?: SiteNavGroup[];
   /** Framework link component (e.g. next/link). Defaults to a plain anchor. */
   Link?: LinkLike;
   appearance?: 'application';
@@ -36,6 +43,7 @@ interface Props {
 
 export function SiteNav({
   items,
+  groups,
   currentPath,
   Link = DefaultLink,
   appearance,
@@ -44,6 +52,42 @@ export function SiteNav({
   menuActions,
 }: Props) {
   if (appearance === 'application') {
+    const populatedGroups = groups?.filter((group) => group.items.length > 0);
+    if (populatedGroups?.length) {
+      return (
+        <>
+          <details className="sk-grouped-menu" data-sitekit-menu>
+            <summary>
+              {menuLabel}
+              <span aria-hidden="true">☰</span>
+            </summary>
+            <nav className="sk-grouped-panel" aria-label={label}>
+              <div className="sk-nav-groups">
+                {populatedGroups.map((group) => (
+                  <section className="sk-nav-group" key={group.label} aria-label={group.label}>
+                    <h2>{group.label}</h2>
+                    {group.items.map((item) => (
+                      <Link
+                        key={item.path}
+                        href={href(item.path)}
+                        aria-current={item.path === currentPath ? 'page' : undefined}
+                      >
+                        <span className="sk-nav-link-label">{item.label}</span>
+                        {item.description && (
+                          <span className="sk-nav-description">{item.description}</span>
+                        )}
+                      </Link>
+                    ))}
+                  </section>
+                ))}
+              </div>
+              {menuActions && <div className="sk-grouped-actions">{menuActions}</div>}
+            </nav>
+          </details>
+          <MenuDismiss currentPath={currentPath} />
+        </>
+      );
+    }
     if (items.length === 0) return null;
     const links = () =>
       items.map((item) => (

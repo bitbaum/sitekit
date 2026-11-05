@@ -14,11 +14,13 @@ import type { CSSProperties, ReactNode } from 'react';
 import { href } from '../model.js';
 import type { SiteChrome as SiteChromeSpec, SiteNavItem } from '../schema.js';
 import { DefaultLink, type LinkLike } from './link.js';
-import { SiteNav } from './SiteNav.js';
+import { SiteNav, type SiteNavGroup } from './SiteNav.js';
 
 interface Props {
   chrome: SiteChromeSpec;
   navItems: SiteNavItem[];
+  /** Descriptive application navigation; product-owned group configuration. */
+  navGroups?: SiteNavGroup[];
   currentPath: string;
   /** Framework link component (e.g. next/link). Defaults to a plain anchor. */
   Link?: LinkLike;
@@ -35,6 +37,7 @@ interface Props {
 export function SiteMasthead({
   chrome,
   navItems,
+  navGroups,
   currentPath,
   Link = DefaultLink,
   appearance,
@@ -60,6 +63,7 @@ export function SiteMasthead({
             </Link>
             <SiteNav
               items={navItems}
+              groups={navGroups}
               currentPath={currentPath}
               Link={Link}
               appearance="application"
