@@ -435,6 +435,9 @@
   flex-shrink: 0;
 }
 /* One native disclosure and one link tree for grouped application navigation. */
+.sk-masthead-row:has(.sk-grouped-menu) {
+  position: relative;
+}
 .sk-grouped-menu {
   margin-inline-start: auto;
 }
@@ -517,6 +520,11 @@
   }
 }
 @media (max-width: 380px) {
+  /* Give host account popovers the full narrow viewport, including padding. */
+  .sk-grouped-panel {
+    inset-inline: 0;
+    width: 100%;
+  }
   .sk-masthead-row:has(.sk-grouped-menu) > .sk-account-actions {
     display: none;
   }
