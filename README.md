@@ -183,3 +183,14 @@ can configure `--sk-header-height`, `--sk-mobile-header-height`,
 `SiteTabBar` renders a fixed bottom navigation for small screens (hidden from
 48rem up, where the masthead nav takes over). Pass 3–5 `{ path, label, icon }`
 items and the current path; it renders its own spacer so content is not hidden.
+
+Use `SiteIcon` for the icons — `{ icon: <SiteIcon name="write" /> }` — not a
+unicode glyph: the set is drawn on `currentColor`, so icon and label take one
+colour and the current tab is one rule. Names: `SITE_ICON_NAMES`. Pass
+`tabBar` to `SiteMasthead` on the same page so the masthead drops its menu
+button on phones instead of repeating the tab bar's destinations:
+
+```tsx
+<SiteMasthead appearance="application" tabBar navItems={nav} … />
+<SiteTabBar items={nav.map((n) => ({ ...n, icon: <SiteIcon name={n.icon} /> }))} … />
+```

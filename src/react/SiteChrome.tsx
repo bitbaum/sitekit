@@ -32,6 +32,13 @@ interface Props {
   skipLabel?: string;
   navLabel?: string;
   menuLabel?: string;
+  /**
+   * The page also renders a `SiteTabBar` with these destinations. On phones
+   * the tab bar is then the navigation, and the masthead's menu button is
+   * dropped below the tab bar breakpoint instead of repeating it — one way to
+   * each place, not two. The account actions stay in the masthead.
+   */
+  tabBar?: boolean;
 }
 
 export function SiteMasthead({
@@ -47,6 +54,7 @@ export function SiteMasthead({
   skipLabel = 'Skip to content',
   navLabel = 'Main navigation',
   menuLabel = 'Menu',
+  tabBar = false,
 }: Props) {
   if (appearance === 'application')
     return (
@@ -56,7 +64,7 @@ export function SiteMasthead({
             {skipLabel}
           </a>
         )}
-        <header className="sk-masthead">
+        <header className={tabBar ? 'sk-masthead sk-masthead--tabbar' : 'sk-masthead'}>
           <div className="sk-shell-frame sk-masthead-row">
             <Link href="/" className="sk-brand">
               {brand ?? chrome.name}
