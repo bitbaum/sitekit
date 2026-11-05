@@ -54,3 +54,5 @@ behavior to `@bitbaum/chatkit`, and model/provider transport to `@bitbaum/ai-kit
 Read `package.json` for this package's verification command and run it before
 publishing changes. Use Fleet's auto-merge sweep; do not bypass its required
 checks or rollout holds with manual merging or built-in `--auto`.
+
+For the grouped navigation continuation, read [the checkpoint](docs/navigation-checkpoint.md).

@@ -111,3 +111,59 @@ test('on the narrowest phones the account action moves into the menu, never off 
   );
   assert.ok(!bare.includes('sk-menu-actions') && bare.includes('sk-account-actions'));
 });
+
+test('grouped navigation renders one descriptive link tree with active route and account access', () => {
+  const html = renderToStaticMarkup(
+    h(SiteMasthead, {
+      chrome,
+      appearance: 'application',
+      currentPath: 'write',
+      navItems: [{ path: 'legacy', label: 'Legacy' }],
+      navGroups: [
+        { label: 'Empty', items: [] },
+        {
+          label: 'Create',
+          items: [{ path: 'write', label: 'Write', description: 'Start your article.' }],
+        },
+        { label: 'Read', items: [{ path: '', label: 'Today', description: 'Follow the news.' }] },
+      ],
+      actions: h('a', { href: '/account' }, 'Account'),
+    }),
+  );
+  assert.equal((html.match(/<details/g) || []).length, 1);
+  assert.equal((html.match(/href="\/write"/g) || []).length, 1);
+  assert.equal((html.match(/aria-current="page"/g) || []).length, 1);
+  assert.ok(html.includes('<h2>Create</h2>'));
+  assert.ok(html.includes('Start your article.'));
+  assert.ok(html.includes('aria-label="Read"'));
+  assert.ok(html.includes('href="/"'));
+  assert.ok(html.includes('sk-grouped-actions'));
+  assert.ok(!html.includes('Legacy') && !html.includes('<h2>Empty</h2>'));
+});
+
+test('empty groups retain flat navigation and descriptions are escaped as text', () => {
+  const props = {
+    chrome,
+    appearance: 'application',
+    currentPath: '',
+    navItems: [{ path: '', label: 'Home' }],
+  };
+  const fallback = renderToStaticMarkup(
+    h(SiteMasthead, { ...props, navGroups: [{ label: 'Empty', items: [] }] }),
+  );
+  assert.ok(fallback.includes('sk-mobile-menu'));
+  assert.ok(fallback.includes('Home'));
+  const grouped = renderToStaticMarkup(
+    h(SiteMasthead, {
+      ...props,
+      navGroups: [
+        {
+          label: 'Read',
+          items: [{ path: '', label: 'Home', description: '<script>unsafe</script>' }],
+        },
+      ],
+    }),
+  );
+  assert.ok(!grouped.includes('<script>unsafe</script>'));
+  assert.ok(grouped.includes('&lt;script&gt;unsafe&lt;/script&gt;'));
+});
