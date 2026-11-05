@@ -485,7 +485,7 @@
   font-size: 0.875rem;
   color: var(--sk-muted, #555);
 }
-.sk-grouped-actions a,
+.sk-grouped-actions > a,
 .sk-nav-group a {
   display: flex;
   flex-direction: column;

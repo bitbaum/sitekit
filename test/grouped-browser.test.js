@@ -1,4 +1,4 @@
-/* global document, window, innerWidth */
+/* global document, window, innerWidth, getComputedStyle */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -19,7 +19,10 @@ window.navigate = (currentPath = 'write') => root.render(React.createElement(Sit
     { label: 'Create', items: [{ path: 'write', label: 'Write', description: 'Start an article.' }] },
     { label: 'Discover', items: [{ path: '', label: 'Today', description: 'Read the news.' }, { path: 'analyze', label: 'Examine', description: 'Inspect a source. ' + 'longword'.repeat(40) }] }
   ],
-  actions: React.createElement('a', { href: '/account' }, 'Account')
+  actions: React.createElement(React.Fragment, null,
+    React.createElement('a', { href: '/account' }, 'Account'),
+    React.createElement('div', { className: 'host-widget' }, React.createElement('a', { href: '/settings' }, 'Settings'))
+  )
 }));
 window.navigate();`,
       resolveDir: process.cwd(),
@@ -41,7 +44,7 @@ window.navigate();`,
     for (const width of [320, 390, 834, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       await page.setContent(
-        '<style>body { margin: 0 } * { box-sizing: border-box }</style><div id="root"></div><button id="outside" style="position:fixed;bottom:0;left:0">Outside</button>',
+        '<style>body { margin: 0 } * { box-sizing: border-box } .host-widget a { display: flex; flex-direction: row; min-height: 44px }</style><div id="root"></div><button id="outside" style="position:fixed;bottom:0;left:0">Outside</button>',
       );
       await page.addStyleTag({
         content: readFileSync(new URL('../styles.css', import.meta.url), 'utf8'),
@@ -53,6 +56,11 @@ window.navigate();`,
       await page.keyboard.press('Enter');
       await page.locator('.sk-grouped-panel').waitFor({ state: 'visible' });
       assert.equal(await menu.getAttribute('open'), '');
+      assert.equal(
+        await menu.locator('.host-widget a').evaluate((el) => getComputedStyle(el).flexDirection),
+        'row',
+        'the host widget retains its own link layout',
+      );
       const bounds = await page.locator('.sk-grouped-panel').boundingBox();
       assert.ok(bounds.x >= 0 && bounds.x + bounds.width <= width, `panel fits ${width}`);
       assert.ok(bounds.y + bounds.height <= 900, `panel height fits ${width}`);

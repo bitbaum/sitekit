@@ -48,3 +48,10 @@ popover. Position grouped panels relative to the masthead frame and use the
 full panel width on the narrowest phones. BiasLens adds a regression against
 the actual AccountKit popup bounds. Reverify and release a new patch; its
 consumer checks and deployment remain required.
+
+
+The narrow account screenshot also showed navigation link styles leaking into
+nested host widget links. Restrict generic action styling to direct links;
+nested account controls keep their package-owned layout. A real browser fixture
+reproduced column layout overriding the host's row before the selector fix.
+Include this correction in the next release before BiasLens adoption.
