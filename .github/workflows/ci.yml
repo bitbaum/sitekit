@@ -32,6 +32,15 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
+      - name: Install browser
+        run: |
+          browser="$(command -v google-chrome || command -v chromium || true)"
+          if [ -n "$browser" ]; then
+            echo "PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=$browser" >> "$GITHUB_ENV"
+          else
+            pnpm exec playwright install --with-deps chromium
+          fi
+
       # SSOT: "verified" is defined ONCE, in package.json `verify`
       # (= lint + typecheck + build + test), and run identically here and
       # locally via `pnpm run verify`. Change the checks in one place, not two.

@@ -9,7 +9,7 @@
 
 export { SiteSections } from './SiteSections.js';
 export { SiteMasthead, SiteFooter } from './SiteChrome.js';
-export { SiteNav } from './SiteNav.js';
+export { SiteNav, type SiteNavGroup } from './SiteNav.js';
 export { SiteTabBar, type SiteTabItem } from './SiteTabBar.js';
 export { SiteIcon, SITE_ICON_NAMES, type SiteIconName, type SiteIconProps } from './icons.js';
 export { NavAutoScroll } from './NavAutoScroll.js';

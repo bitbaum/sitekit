@@ -73,6 +73,23 @@ design tokens. Existing document sites keep their utility-class appearance.
   links={[{ href: '/roadmap', label: 'Roadmap' }]} extra="Beta" />
 ```
 
+For a grouped application menu, pass `navGroups` alongside `navItems`. Each
+group has a `label` and `items` containing `path`, `label` and an optional
+`description`. Import `SiteNavGroup` from `@bitbaum/sitekit/react` for typed
+configuration. Nonempty groups replace the flat application navigation with
+one native disclosure and a responsive panel; omitted or empty groups retain
+the flat API. Group labels, destinations and descriptions belong to the host.
+
+```tsx
+navGroups={[{ label: 'Create', items: [
+  { path: 'write', label: 'Write', description: 'Start an article.' }
+] }]}
+```
+
+Run `pnpm exec playwright install --with-deps chromium` before `pnpm run verify`.
+An existing Chromium can be selected with `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`.
+The browser regression uses the public renderer and stylesheet at four widths.
+
 The package owns the responsive menu, its native no-JavaScript fallback,
 Escape/outside/route dismissal, skip link, active states, touch targets and
 footer layout. Products supply labels, navigation data, identity and account
