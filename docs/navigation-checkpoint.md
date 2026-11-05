@@ -22,3 +22,12 @@ Full verify (format/lint/types/build/44 tests) and docs truth audit passed.
 No release, merge or consumer deployment is established by these local results.
 Next: open a normal PR, follow CI and fleet sweep, release through the workflow,
 then update BiasLens with product groups and verify its deployment/rollout gate.
+
+
+SiteKit #43 merged as `cb68eabb47b0b54869ef182f3524aaebba7bed72` after
+successful PR CI. Main CI run 42128370320 remained in browser installation for
+several minutes before reaching tests. The follow-up prefers the existing
+runner Chrome, with the same browser regression and a Playwright installation
+fallback. Apply the same selection to release verification. BiasLens config is
+prepared on `feat/grouped-sitekit-navigation`; its release pin and checks await
+the verified package release.
