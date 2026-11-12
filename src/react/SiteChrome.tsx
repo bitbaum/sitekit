@@ -11,16 +11,18 @@ import type { CSSProperties, ReactNode } from 'react';
  * belongs to its subject; its footer has no business advertising anyone else.
  */
 
+import { isDangerousHref, isExternalHref } from '../links.js';
 import { href } from '../model.js';
-import type { SiteChrome as SiteChromeSpec, SiteNavItem } from '../schema.js';
+import type { SiteChrome as SiteChromeSpec, SiteNavLink } from '../schema.js';
 import { DefaultLink, type LinkLike } from './link.js';
-import { SiteNav, type SiteNavGroup } from './SiteNav.js';
+import { SiteNav, type SiteNavLinkGroup } from './SiteNav.js';
 
 interface Props {
   chrome: SiteChromeSpec;
-  navItems: SiteNavItem[];
+  /** In-site `path` items, or links elsewhere by `href` (see SiteNavLink). */
+  navItems: SiteNavLink[];
   /** Descriptive application navigation; product-owned group configuration. */
-  navGroups?: SiteNavGroup[];
+  navGroups?: SiteNavLinkGroup[];
   currentPath: string;
   /** Framework link component (e.g. next/link). Defaults to a plain anchor. */
   Link?: LinkLike;
@@ -39,6 +41,12 @@ interface Props {
    * each place, not two. The account actions stay in the masthead.
    */
   tabBar?: boolean;
+  /**
+   * End in-site nav links with a slash ('/work/'), for a static site that
+   * serves each page as a directory. Default false ('/work'). When set,
+   * `aria-current` also ignores slashes at either end of `currentPath`.
+   */
+  trailingSlash?: boolean;
 }
 
 export function SiteMasthead({
@@ -55,6 +63,7 @@ export function SiteMasthead({
   navLabel = 'Main navigation',
   menuLabel = 'Menu',
   tabBar = false,
+  trailingSlash = false,
 }: Props) {
   if (appearance === 'application')
     return (
@@ -78,6 +87,7 @@ export function SiteMasthead({
               label={navLabel}
               menuLabel={menuLabel}
               menuActions={actions}
+              trailingSlash={trailingSlash}
             />
             {actions && <div className="sk-account-actions">{actions}</div>}
           </div>
@@ -107,11 +117,47 @@ export function SiteMasthead({
             </span>
           </Link>
 
-          <SiteNav items={navItems} currentPath={currentPath} Link={Link} />
+          <SiteNav
+            items={navItems}
+            currentPath={currentPath}
+            Link={Link}
+            trailingSlash={trailingSlash}
+          />
         </div>
       </div>
     </header>
   );
+}
+
+type FooterLink = { href: string; label: string };
+
+/**
+ * Footer links as rendered: a javascript:, vbscript: or data: link is dropped,
+ * another origin gets rel; every other link renders as given.
+ */
+function footerLinks(Link: LinkLike, links: FooterLink[]) {
+  return links
+    .filter((item) => !isDangerousHref(item.href))
+    .map((item) => (
+      <Link
+        key={item.href}
+        href={item.href}
+        rel={isExternalHref(item.href) ? 'noopener' : undefined}
+      >
+        {item.label}
+      </Link>
+    ));
+}
+
+/**
+ * The copyright year: an integer from 1 to 9999, or null for none. Anything
+ * else (an untyped caller's string, false, NaN, 0, 1e21) counts as omitted,
+ * and the clock is read.
+ */
+function copyrightYear(year: unknown): number | null {
+  if (year === null) return null;
+  if (typeof year === 'number' && Number.isInteger(year) && year >= 1 && year <= 9999) return year;
+  return new Date().getFullYear();
 }
 
 export function SiteFooter({
@@ -122,17 +168,33 @@ export function SiteFooter({
   Link = DefaultLink,
   label = 'Footer navigation',
   extra,
+  year,
 }: {
   chrome: SiteChromeSpec;
   appearance?: 'application';
-  links?: Array<{ href: string; label: string }>;
+  links?: FooterLink[];
   /** Optional semantic link groups; flat links remain supported. */
-  groups?: Array<{ label: string; links: Array<{ href: string; label: string }> }>;
+  groups?: Array<{ label: string; links: FooterLink[] }>;
   Link?: LinkLike;
   label?: string;
   extra?: ReactNode;
+  /**
+   * The year in the copyright line of the application footer. An integer
+   * from 1 to 9999 is printed as given; `null` prints no year. Omitted (or any
+   * other value), the footer reads the clock at render time, so a statically
+   * generated page should pass the year it means, or its output changes on
+   * 1 January. The document footer prints no year and never reads the clock.
+   */
+  year?: number | null;
 }) {
-  if (appearance === 'application')
+  if (appearance === 'application') {
+    const shownYear = copyrightYear(year);
+    // A group whose every link is dropped is left out with its heading; a
+    // group given no links renders as in 0.7.0.
+    const shownGroups = groups?.filter(
+      (group) =>
+        group.links.length === 0 || group.links.some((item) => !isDangerousHref(item.href)),
+    );
     return (
       <footer className="sk-footer">
         <div className="sk-shell-frame">
@@ -143,42 +205,39 @@ export function SiteFooter({
               </Link>
               <p>{chrome.footerNote}</p>
             </div>
-            {groups ? (
+            {shownGroups ? (
               <nav
                 aria-label={label}
                 className="sk-footer-groups"
-                style={{ '--sk-footer-columns': groups.length } as CSSProperties}
+                style={{ '--sk-footer-columns': shownGroups.length } as CSSProperties}
               >
-                {groups.map((group) => (
+                {shownGroups.map((group) => (
                   <div className="sk-footer-group" key={group.label}>
                     <h2>{group.label}</h2>
-                    {group.links.map((item) => (
-                      <Link key={item.href} href={item.href}>
-                        {item.label}
-                      </Link>
-                    ))}
+                    {footerLinks(Link, group.links)}
                   </div>
                 ))}
               </nav>
             ) : (
-              <nav aria-label={label}>
-                {links.map((item) => (
-                  <Link key={item.href} href={item.href}>
-                    {item.label}
-                  </Link>
-                ))}
-              </nav>
+              <nav aria-label={label}>{footerLinks(Link, links)}</nav>
             )}
           </div>
           <div className="sk-footer-bottom">
             <span>
-              © {new Date().getFullYear()} {chrome.name}
+              {shownYear === null ? (
+                <>© {chrome.name}</>
+              ) : (
+                <>
+                  © {shownYear} {chrome.name}
+                </>
+              )}
             </span>
             {extra}
           </div>
         </div>
       </footer>
     );
+  }
   return (
     <footer className="mt-24 border-t border-subtle">
       <div className="mx-auto max-w-shell px-4 py-12 sm:px-6 lg:px-8">

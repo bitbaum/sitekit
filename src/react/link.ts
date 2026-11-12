@@ -14,6 +14,8 @@ export interface LinkProps {
   href: string;
   className?: string;
   'aria-current'?: 'page';
+  /** 'noopener' on a link to another origin. */
+  rel?: string;
   children?: ReactNode;
 }
 

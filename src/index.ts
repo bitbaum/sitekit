@@ -13,6 +13,7 @@ export {
   siteChromeSchema,
   siteSectionSchema,
   siteNavItemSchema,
+  siteNavLinkSchema,
   heroSectionSchema,
   proseSectionSchema,
   statsSectionSchema,
@@ -39,6 +40,8 @@ export {
   type SiteSection,
   type SiteSectionKind,
   type SiteNavItem,
+  // the one hand-written type: the exactly-one-of union siteNavLinkSchema checks
+  type SiteNavLink,
   type SiteStat,
   type SiteCard,
   type SiteDefinition,
@@ -59,4 +62,15 @@ export {
   assertDeliverable,
 } from './provenance.js';
 
-export { validateSite, siteNavItems, pageRendersOwnHeader, sitePageAt, href } from './model.js';
+export {
+  validateSite,
+  siteNavItems,
+  pageRendersOwnHeader,
+  sitePageAt,
+  href,
+  navItemHref,
+  isCurrentNavItem,
+  type HrefOptions,
+} from './model.js';
+
+export { isAllowedHref, isExternalHref } from './links.js';

@@ -73,10 +73,57 @@ design tokens. Existing document sites keep their utility-class appearance.
   links={[{ href: '/roadmap', label: 'Roadmap' }]} extra="Beta" />
 ```
 
+`styles.css` gives the chrome's own elements `box-sizing: border-box` at zero
+specificity, so it measures the same with or without a host reset. A host rule
+with any type, class or id selector still wins; a host rule on `*` alone has
+the same zero specificity, so if it loads before `styles.css` it loses (the
+usual `*, *::before, *::after { box-sizing: border-box }` reset agrees anyway). What a host passes into a slot (`brand`, `actions`, a footer's
+`extra`, a tab `icon`) keeps the host's own box model.
+
+Rendered nav items (`navItems`, `navGroups` items, `SiteNav` `items`) take a
+`SiteNavLink`: either `path`, an in-site path always rendered through `href()`
+(`'work'` → `/work`, `'notes:2026'` → `/notes:2026`), or `href`, used verbatim,
+never both. An `href` must start with `http:`, `https:`, `mailto:`, `tel:`,
+`//`, `#` or `?` (`isAllowedHref`); `siteNavLinkSchema` refuses anything else
+(`bitcoin:` and `lightning:` included) with a message on the `href` field, and
+the renderers leave such an item out. Its output is a `SiteNavLink`, so a
+parsed item goes straight to the renderers. A nav or group left with no items
+renders as one given none: the application nav and a group are not rendered,
+the document nav renders an empty `<nav>`, as it does for `items={[]}`.
+`siteNavItems()`, `SiteNavItem`, `siteNavItemSchema` and `SiteNavGroup` stay
+path-only. A link to another origin, as a browser resolves it (`https://…`,
+`//…`, `/\host`), gets `rel="noopener"`, in the nav and in the footer. The
+footer renders every link as given except `javascript:`, `vbscript:` and
+`data:` ones, which it drops, along with a group whose every link was dropped.
+Tab bar items are always in-site paths.
+
+A static site renders the same shell once, at build time, with
+`renderToStaticMarkup` from `react-dom/server`. Pass `year` so the footer does
+not read the clock (the page would otherwise change on 1 January;
+`year={null}` prints none; a value that is not an integer from 1 to 9999
+counts as omitted). Pass `trailingSlash` when the host serves each page as a directory:
+`/work/`, the slash before any `?query` or `#fragment` (`/a/#b`), none after a
+file name (`/feed.xml`) unless the path already ends in one (`/a/b.c/`), and `aria-current` then matches `currentPath` with or
+without slashes at either end. Without `trailingSlash`, `aria-current` is set
+only when `path` equals `currentPath` exactly, as before. Without hydration
+the native menu still opens and closes; Escape and outside-click dismissal need
+the React client.
+
+```tsx
+const html = renderToStaticMarkup(<>
+  <SiteMasthead appearance="application" chrome={chrome} currentPath="work"
+    trailingSlash navItems={[{ path: 'work', label: 'The work' },
+      { href: 'https://github.com/bitbaum', label: 'Source' }]} />
+  <SiteFooter appearance="application" chrome={chrome} year={2026}
+    links={[{ href: 'https://github.com/bitbaum', label: 'Source' }]} />
+</>);
+```
+
 For a grouped application menu, pass `navGroups` alongside `navItems`. Each
-group has a `label` and `items` containing `path`, `label` and an optional
-`description`. Import `SiteNavGroup` from `@bitbaum/sitekit/react` for typed
-configuration. Nonempty groups replace the flat application navigation with
+group has a `label` and `items` containing `path` (or `href`), `label` and an
+optional `description`. Import `SiteNavGroup` (path-only items) or
+`SiteNavLinkGroup` (items may be `href` links) from `@bitbaum/sitekit/react` for
+typed configuration. Nonempty groups replace the flat application navigation with
 one native disclosure and a responsive panel; omitted or empty groups retain
 the flat API. Group labels, destinations and descriptions belong to the host.
 
@@ -183,6 +230,8 @@ can configure `--sk-header-height`, `--sk-mobile-header-height`,
 `SiteTabBar` renders a fixed bottom navigation for small screens (hidden from
 48rem up, where the masthead nav takes over). Pass 3–5 `{ path, label, icon }`
 items and the current path; it renders its own spacer so content is not hidden.
+A tab's `path` is always an in-site path; `trailingSlash` works as on the
+masthead.
 
 Use `SiteIcon` for the icons — `{ icon: <SiteIcon name="write" /> }` — not a
 unicode glyph: the set is drawn on `currentColor`, so icon and label take one

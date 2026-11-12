@@ -8,15 +8,26 @@
  */
 
 import type { ReactNode } from 'react';
-import { href } from '../model.js';
-import type { SiteNavItem } from '../schema.js';
+import { isExternalHref } from '../links.js';
+import { isCurrentNavItem, navItemHref } from '../model.js';
+import type { SiteNavItem, SiteNavLink } from '../schema.js';
 import { DefaultLink, type LinkLike } from './link.js';
 import { MenuDismiss } from './MenuDismiss.js';
 import { NavAutoScroll } from './NavAutoScroll.js';
 
+/** A group of in-site destinations; the type hosts already configure. */
 export interface SiteNavGroup {
   label: string;
   items: Array<SiteNavItem & { description?: string }>;
+}
+
+/**
+ * What the grouped menu renders: a {@link SiteNavGroup}, whose items may also
+ * be links elsewhere (`href`). Every `SiteNavGroup` is one.
+ */
+export interface SiteNavLinkGroup {
+  label: string;
+  items: Array<SiteNavLink & { description?: string }>;
 }
 
 interface Props {
@@ -24,10 +35,10 @@ interface Props {
    * Deliberately NOT `SitePage[]`. Everything the nav receives ends up in the
    * payload of every page it renders on.
    */
-  items: SiteNavItem[];
+  items: SiteNavLink[];
   currentPath: string;
   /** Opt-in grouped application menu. Flat items remain unchanged when omitted. */
-  groups?: SiteNavGroup[];
+  groups?: SiteNavLinkGroup[];
   /** Framework link component (e.g. next/link). Defaults to a plain anchor. */
   Link?: LinkLike;
   appearance?: 'application';
@@ -39,10 +50,45 @@ interface Props {
    * the menu button, so styles.css shows them here instead (one tap away).
    */
   menuActions?: ReactNode;
+  /**
+   * End in-site links with a slash ('/work/'), for a static site that serves
+   * each page as a directory. Default false. Items given by `href` are
+   * used verbatim; with it, `aria-current` also ignores slashes at either end.
+   */
+  trailingSlash?: boolean;
+}
+
+/**
+ * The links to render, with the props every nav link shares: where it goes,
+ * whether it is here, rel. An item whose `href` is refused (see
+ * `isAllowedHref`) is left out, never rendered.
+ */
+function navLinks<T extends SiteNavLink>(items: T[], currentPath: string, trailingSlash: boolean) {
+  return items.flatMap((item) => {
+    const target = navItemHref(item, { trailingSlash });
+    if (target === null) return [];
+    const current = isCurrentNavItem(item, currentPath, { trailingSlash });
+    return [
+      {
+        item,
+        key: item.href ?? item.path,
+        props: {
+          href: target,
+          rel: isExternalHref(target) ? 'noopener' : undefined,
+          'aria-current': current ? ('page' as const) : undefined,
+        },
+      },
+    ];
+  });
+}
+
+/** The items that render: an item whose `href` is refused is left out. */
+function renderable<T extends SiteNavLink>(items: T[]): T[] {
+  return items.filter((item) => navItemHref(item) !== null);
 }
 
 export function SiteNav({
-  items,
+  items: givenItems,
   groups,
   currentPath,
   Link = DefaultLink,
@@ -50,9 +96,15 @@ export function SiteNav({
   label = 'Sections',
   menuLabel = 'Menu',
   menuActions,
+  trailingSlash = false,
 }: Props) {
+  // A refused href is dropped before anything is counted, so a nav or group
+  // whose every item is refused renders as one that was given none.
+  const items = renderable(givenItems);
   if (appearance === 'application') {
-    const populatedGroups = groups?.filter((group) => group.items.length > 0);
+    const populatedGroups = groups
+      ?.map((group) => ({ ...group, items: renderable(group.items) }))
+      .filter((group) => group.items.length > 0);
     if (populatedGroups?.length) {
       return (
         <>
@@ -66,18 +118,16 @@ export function SiteNav({
                 {populatedGroups.map((group) => (
                   <section className="sk-nav-group" key={group.label} aria-label={group.label}>
                     <h2>{group.label}</h2>
-                    {group.items.map((item) => (
-                      <Link
-                        key={item.path}
-                        href={href(item.path)}
-                        aria-current={item.path === currentPath ? 'page' : undefined}
-                      >
-                        <span className="sk-nav-link-label">{item.label}</span>
-                        {item.description && (
-                          <span className="sk-nav-description">{item.description}</span>
-                        )}
-                      </Link>
-                    ))}
+                    {navLinks(group.items, currentPath, trailingSlash).map(
+                      ({ item, key, props }) => (
+                        <Link key={key} {...props}>
+                          <span className="sk-nav-link-label">{item.label}</span>
+                          {item.description && (
+                            <span className="sk-nav-description">{item.description}</span>
+                          )}
+                        </Link>
+                      ),
+                    )}
                   </section>
                 ))}
               </div>
@@ -90,12 +140,8 @@ export function SiteNav({
     }
     if (items.length === 0) return null;
     const links = () =>
-      items.map((item) => (
-        <Link
-          key={item.path}
-          href={href(item.path)}
-          aria-current={item.path === currentPath ? 'page' : undefined}
-        >
+      navLinks(items, currentPath, trailingSlash).map(({ item, key, props }) => (
+        <Link key={key} {...props}>
           {item.label}
         </Link>
       ));
@@ -124,13 +170,12 @@ export function SiteNav({
       aria-label={label}
       className="scrollbar-hide -mx-1 flex max-w-full flex-nowrap items-center gap-x-1 overflow-x-auto"
     >
-      {items.map((item) => {
-        const isCurrent = item.path === currentPath;
+      {navLinks(items, currentPath, trailingSlash).map(({ item, key, props }) => {
+        const isCurrent = props['aria-current'] === 'page';
         return (
           <Link
-            key={item.path || 'home'}
-            href={href(item.path)}
-            aria-current={isCurrent ? 'page' : undefined}
+            key={key || 'home'}
+            {...props}
             className={[
               // min-h-11 is the 44px touch floor. `px-2 py-1` on text-xs came out
               // around 28px, which is a fiddly target on a phone and below the

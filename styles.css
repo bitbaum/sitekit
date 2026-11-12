@@ -1,4 +1,34 @@
 /* Shared application chrome. Consumers supply semantic theme variables only. */
+/* The chrome's own box model, so it measures the same on a host page with or
+   without a `box-sizing: border-box` reset. It covers the elements sitekit
+   renders, not host content passed into its slots (brand, actions, a footer's
+   extra, a tab icon): those keep whatever box model the host gives them.
+   Zero specificity (:where), so a host rule with a type, class or id
+   selector still wins; a host `*` rule loaded before this file does not. Pseudo-elements are
+   not covered (they cannot sit inside :where()), and sitekit gives none of
+   them padding or a border, so their box model does not change a size. */
+:where(
+  .sk-skip,
+  .sk-masthead,
+  .sk-masthead *,
+  .sk-footer,
+  .sk-footer *,
+  .sk-tabbar,
+  .sk-tabbar *,
+  .sk-tabbar-spacer
+):not(
+  :where(
+    .sk-brand *,
+    .sk-account-actions *,
+    .sk-menu-actions *,
+    .sk-grouped-actions *,
+    .sk-footer-bottom > :not(:first-child),
+    .sk-footer-bottom > :not(:first-child) *,
+    .sk-tab-icon *
+  )
+) {
+  box-sizing: border-box;
+}
 :where(.sk-masthead, .sk-footer) {
   color: var(--sk-fg, CanvasText);
   font-family: var(--sk-font, system-ui, sans-serif);
@@ -77,12 +107,15 @@
   gap: 0.5rem;
   flex-shrink: 0;
 }
+/* The link is the host's (the `actions` slot), so its box model is too. No
+   block padding: min-height and centring give it 44px under border-box and
+   46px (the border) under content-box, where 0.65rem of padding made 67px. */
 .sk-account-actions > a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 44px;
-  padding: 0.65rem 1rem;
+  padding: 0 1rem;
   color: var(--sk-fg, CanvasText);
   border: 1px solid var(--sk-line, #d6d6d6);
   border-radius: var(--sk-radius, 0.5rem);
@@ -231,7 +264,7 @@
     align-items: center;
     justify-content: center;
     min-height: 44px;
-    padding: 0.65rem 1rem;
+    padding: 0 1rem; /* as .sk-account-actions > a: 44-46px in either box model */
     color: var(--sk-fg, CanvasText);
     border: 1px solid var(--sk-line, #d6d6d6);
     border-radius: var(--sk-radius, 0.5rem);
