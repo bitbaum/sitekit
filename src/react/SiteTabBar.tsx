@@ -24,6 +24,8 @@ interface Props {
   currentPath: string;
   Link?: LinkLike;
   label?: string;
+  /** End links with a slash ('/work/'), as on SiteMasthead. Default false. */
+  trailingSlash?: boolean;
 }
 
 const isCurrent = (path: string, current: string) => {
@@ -32,7 +34,13 @@ const isCurrent = (path: string, current: string) => {
   return a === '/' ? b === '/' : b === a || b.startsWith(a + '/');
 };
 
-export function SiteTabBar({ items, currentPath, Link = DefaultLink, label = 'Main' }: Props) {
+export function SiteTabBar({
+  items,
+  currentPath,
+  Link = DefaultLink,
+  label = 'Main',
+  trailingSlash = false,
+}: Props) {
   if (items.length === 0) return null;
   return (
     <>
@@ -43,7 +51,7 @@ export function SiteTabBar({ items, currentPath, Link = DefaultLink, label = 'Ma
           return (
             <Link
               key={item.path}
-              href={href(item.path)}
+              href={href(item.path, { trailingSlash })}
               aria-current={current ? 'page' : undefined}
               className="sk-tab"
             >

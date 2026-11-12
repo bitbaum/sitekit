@@ -13,6 +13,8 @@
  */
 
 import { z } from 'zod';
+
+import { ALLOWED_HREF_STARTS, isAllowedHref } from './links.js';
 import { provenanceSchema } from './provenance.js';
 
 // =====================================================================
@@ -330,3 +332,45 @@ export const siteNavItemSchema = z.object({
   label: z.string().min(1),
 });
 export type SiteNavItem = z.infer<typeof siteNavItemSchema>;
+
+/**
+ * A rendered nav link: a {@link SiteNavItem} (an in-site `path`), or a label
+ * with an `href` used verbatim ('https://github.com/bitbaum', 'mailto:…',
+ * '#top'). Exactly one of the two; `href` must pass `isAllowedHref`.
+ */
+export const siteNavLinkSchema = z
+  .object({
+    path: z.string().optional(),
+    href: z.string().optional(),
+    label: z.string().min(1),
+  })
+  .superRefine((item, ctx) => {
+    if (item.path !== undefined && item.href !== undefined) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['href'],
+        message: 'give exactly one of path or href, not both',
+      });
+    } else if (item.path === undefined && item.href === undefined) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['path'],
+        message: 'give exactly one of path (an in-site page) or href (a link elsewhere)',
+      });
+    } else if (item.href !== undefined && !isAllowedHref(item.href)) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['href'],
+        message: `href '${item.href}' must start with ${ALLOWED_HREF_STARTS}; give an in-site page as path`,
+      });
+    }
+  })
+  // Once the check has passed exactly one of the two is set; the output says
+  // so, keeping only that one, so a parsed item is a SiteNavLink.
+  .transform((item): SiteNavLink =>
+    item.href !== undefined
+      ? { href: item.href, label: item.label }
+      : { path: item.path ?? '', label: item.label },
+  );
+export type SiteNavLink =
+  (SiteNavItem & { href?: never }) | { href: string; label: string; path?: never };
